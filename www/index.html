@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="store">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel ="stylesheet" href="css/font-awesome.css">
+  <link rel ="stylesheet" href="css/style.css">
+  <title>Document</title>
+  <script src="js/angular.min.js"></script>
+</head>
+
+<body>
+  <div ng-controller="StoreController as store">
+    <!--<div>-->
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="product in store.products  | orderBy:'-price'">
+        
+        <product-title></product-title> <!--CUANDO SE LE MANDA A HABLAR SE PONE EN MINUSCULAS-->
+        <!--  <h3 ng-include="'product-title.html'"></h3> <!incluir lo que esta en el directorio se incluye aqui-->
+        
+               
+        
+        
+        
+        <section ng-controller="PanelController as panel">
+            <!-- se creo un controlador de panel -->
+            <ul class="nav nav-pills">
+              <li ng-class="{active: panel.isSelected(1)}"><a href="" ng-click="panel.selectTab(1)">Description</a></li>
+              <!-- Ng-clas debe tener un objeto para que pueda ser comparado. la clase active lo que haace es marcar la opcion de azul-->
+              <li ng-class="{active:  panel.isSelected(2)}"><a href="" ng-click="panel.selectTab(2)">Specification</a></li>
+              <li ng-class="{active: panel.isSelected(3)}"><a href="" ng-click="panel.selectTab(3)">Reviews </a></li>
+              <!-- se crea la funcion isSelected-->
+            </ul>
+            <div class="panel" ng-show="panel.isSelected(1)">
+              <h4>Description</h4>
+              <blockquote>{{product.Description}}</blockquote>
+            </div>
+
+            <div class="panel" ng-show="panel.isSelected(2)">
+              <h4>Specification</h4>
+              <blockquote>None yet</blockquote>
+            </div>
+
+            <div class="panel" ng-show="panel.isSelected(3)">
+
+              <h4>Review</h4>
+              <form name="reviewForm" class="form-horizontal"
+              ng-controller="ReviewController as reviewCtrl" 
+              ng-submit="reviewCtrl.addReview(product)">
+
+              <blockquote ng-repeat="review in product.reviews" >
+                <b>Stars: {{review.Stars}}</b>
+              {{review.body}}
+              <cite>by: {{review.author}}</cite>
+              </blockquote>
+              <blockquote >
+                <b>Stars: {{reviewCtrl.review.Stars}}</b>
+              {{reviewCtrl.review.body}}
+              <cite>by: {{reviewCtrl.review.author}}</cite>
+              </blockquote>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-xs-3 col-sm-3 col-md-3">
+                <label form="stars">Stars:</label>
+<select class ="form-control" ng-model="reviewCtrl.reviews.stars" required > 
+  
+    <option value="1" >&#xf005;</option>
+  <option value="2">&#xf005;&#xf005;</option>
+  <option value="3"> &#xf005;&#xf005;</option>
+  <option value="4"> &#xf005;&#xf005;&#xf005;&#xf005;</option>
+  <option value="5">&#xf005;&#xf005;&#xf005;&#xf005;&#xf005;</option>
+</select>
+</div>
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
+</div>
+<label for="comment">Your Comment:</label>
+<textarea class="form-control" ng-model="review.body" cols="30" rows="" required></textarea>
+<label for="author">by:</label> 
+
+<input class= "form-control" type ="email" ng-model="reviewCtrl.review.author"  required>
+<!--<div> reviewForm is {{reviewForm.$valid}}</div>  esta validando lo del formulario-->
+<input ng-disabled="reviewForm.$invalid" class="btn btn-primary pull-right" type="submit" value="submit">   <!-- deshabilita los campos-->  
+
+                    
+        </div>
+        </li>
+      </form> 
+      </ul>
+    </div>
+  </div>
+
+  </section>
+
+
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
